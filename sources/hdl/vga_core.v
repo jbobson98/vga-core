@@ -3,6 +3,9 @@
 module vga_core (
     input wire clk,
     input wire rst,
+    input wire [3:0] red_switches,
+    input wire [3:0] green_switches,
+    input wire [3:0] blue_switches,
     output wire hsync,
     output wire vsync,
     output wire [3:0] red,
@@ -64,11 +67,24 @@ vga_sync_generator #(
     .y_loc(y_loc)
 );
 
+// Color testing
+wire [3:0] red_db, green_db, blue_db;
+color_tester #(
+    .CLK_FREQ(25_000_000)
+) color_switches (
+    .clk(clk_25mhz),
+    .rst(rst_sync),
+    .red_switches(red_switches),
+    .green_switches(green_switches),
+    .blue_switches(blue_switches),
+    .red_o(red_db),
+    .green_o(green_db),
+    .blue_o(blue_db)
+);
 
-// Replace this with pixel data gen at some point
-assign red = 4'b1111;
-assign green = 4'b1111;
-assign blue = 4'b1111;
+assign red = (video_active) ? red_db : 4'b0000;
+assign green = (video_active) ? green_db : 4'b0000;
+assign blue = (video_active) ? blue_db : 4'b0000;
 
 
 

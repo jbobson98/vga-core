@@ -1,16 +1,13 @@
 module flex_counter #(
     parameter MAX_COUNT = 255,
-    parameter WIDTH = 0 // if counter width less than bits need to reach max count, calculated bits will be used
+    parameter WIDTH = 8 
 )(
     input wire clk,
     input wire rst,
     input wire cen,    // count enable
     output reg maxcnt, // MAX_COUNT reached
-    output reg [COUNT_BITS-1 : 0] count
+    output reg [WIDTH-1 : 0] count
 );
-
-localparam integer MIN_BITS = $clog2(MAX_COUNT + 1);
-localparam integer COUNT_BITS = (WIDTH < MIN_BITS) ? MIN_BITS : WIDTH;
 
 always @(posedge clk or posedge rst) begin
 
