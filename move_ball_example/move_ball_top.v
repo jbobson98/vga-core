@@ -71,21 +71,6 @@ movement_controller movement (
 );
 
 
-/*
-always @(posedge clk_25mhz or posedge rst_sync) begin
-    if(rst_sync) begin
-        cursor_x <= 0;
-        cursor_y <= 0;
-    end else begin
-        cursor_x <= 0;
-        cursor_y <= 0;
-    end
-end
-*/
-
-
-
-
 always @(posedge clk_25mhz) begin
     if((vga_x_coord >= cursor_x) && (vga_x_coord <= cursor_x + CURSOR_WIDTH) && 
        (vga_y_coord >= cursor_y) && (vga_y_coord <= cursor_y + CURSOR_WIDTH)) 

@@ -21,8 +21,11 @@ always @(posedge clk or posedge rst) begin
         x_pos <= 0;
         y_pos <= 0;
     end else begin
-        if(ms_10 && right) begin
-            x_pos <= x_pos + 1;
+        if(ms_10) begin
+            if(right) x_pos <= x_pos + 1;
+            if(left) x_pos <= x_pos - 1;
+            if(up) y_pos <= y_pos - 1;
+            if(down) y_pos <= y_pos + 1;
         end
     end
 end
