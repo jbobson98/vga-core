@@ -1,6 +1,6 @@
 // Top level module for VGA experimentation on the Digilent BASYS 3 development board
 
-module vga_core (
+module vga_core_color_tester (
     input wire clk,
     input wire rst,
     input wire [3:0] red_switches,

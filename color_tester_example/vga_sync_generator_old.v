@@ -53,7 +53,7 @@ flex_counter #(.MAX_COUNT(TOTAL_HEIGHT-1), .WIDTH(HEIGHT_BITS)) vertical_counter
 
 // (i.e. the values lead genoration of syncpulse by 1 clock cycle)
 // when horz_cnt = 655, hsync <= 1'b0; (HORZ_SYNC_START)
-// when horz_cnt = 751, hsync <= 1'b1;
+// when horz_cnt = 751, hsycn <= 1'b1;
 // same for vsync at 489 and 491
 
 always @(posedge clk or posedge rst) begin
