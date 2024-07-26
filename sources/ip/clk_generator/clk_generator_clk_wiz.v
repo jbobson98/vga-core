@@ -55,6 +55,7 @@
 //----------------------------------------------------------------------------
 // clk_100mhz__100.00000______0.000______50.0______137.681____105.461
 // clk_25mhz__25.00000______0.000______50.0______183.467____105.461
+// clk_75mhz__75.00000______0.000______50.0______146.170____105.461
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -69,6 +70,7 @@ module clk_generator_clk_wiz
   // Clock out ports
   output        clk_100mhz,
   output        clk_25mhz,
+  output        clk_75mhz,
   // Status and control signals
   input         reset,
   output        locked,
@@ -94,7 +96,7 @@ wire clk_in2_clk_generator;
 
   wire        clk_100mhz_clk_generator;
   wire        clk_25mhz_clk_generator;
-  wire        clk_out3_clk_generator;
+  wire        clk_75mhz_clk_generator;
   wire        clk_out4_clk_generator;
   wire        clk_out5_clk_generator;
   wire        clk_out6_clk_generator;
@@ -107,7 +109,6 @@ wire clk_in2_clk_generator;
   wire        clkfbout_clk_generator;
   wire        clkfbout_buf_clk_generator;
   wire        clkfboutb_unused;
-   wire clkout2_unused;
    wire clkout3_unused;
    wire clkout4_unused;
   wire        clkout5_unused;
@@ -129,6 +130,9 @@ wire clk_in2_clk_generator;
     .CLKOUT1_DIVIDE       (36),
     .CLKOUT1_PHASE        (0.000),
     .CLKOUT1_DUTY_CYCLE   (0.500),
+    .CLKOUT2_DIVIDE       (12),
+    .CLKOUT2_PHASE        (0.000),
+    .CLKOUT2_DUTY_CYCLE   (0.500),
     .CLKIN1_PERIOD        (10.000))
   plle2_adv_inst
     // Output clocks
@@ -136,7 +140,7 @@ wire clk_in2_clk_generator;
     .CLKFBOUT            (clkfbout_clk_generator),
     .CLKOUT0             (clk_100mhz_clk_generator),
     .CLKOUT1             (clk_25mhz_clk_generator),
-    .CLKOUT2             (clkout2_unused),
+    .CLKOUT2             (clk_75mhz_clk_generator),
     .CLKOUT3             (clkout3_unused),
     .CLKOUT4             (clkout4_unused),
     .CLKOUT5             (clkout5_unused),
@@ -183,6 +187,10 @@ wire clk_in2_clk_generator;
   BUFG clkout2_buf
    (.O   (clk_25mhz),
     .I   (clk_25mhz_clk_generator));
+
+  BUFG clkout3_buf
+   (.O   (clk_75mhz),
+    .I   (clk_75mhz_clk_generator));
 
 
 

@@ -14,18 +14,18 @@ module vga_core (
 );
 
 
-// VGA resolution parameters
-localparam integer HORZ_PIXELS = 640;
-localparam integer HORZ_FRONT_PORCH = 16;
-localparam integer HORZ_BACK_PORCH = 48;
-localparam integer HORZ_SYNC = 96;
+// VGA resolution parameters (1280x720 @60Hz)
+localparam integer HORZ_PIXELS = 1280;
+localparam integer HORZ_FRONT_PORCH = 110;
+localparam integer HORZ_BACK_PORCH = 220;
+localparam integer HORZ_SYNC = 40;
 localparam integer TOTAL_WIDTH = HORZ_PIXELS + HORZ_FRONT_PORCH + HORZ_BACK_PORCH + HORZ_SYNC;
 localparam integer WIDTH_BITS = $clog2(TOTAL_WIDTH + 1);
 
-localparam integer VERT_PIXELS = 480;
-localparam integer VERT_FRONT_PORCH = 10;
-localparam integer VERT_BACK_PORCH = 33;
-localparam integer VERT_SYNC = 2;
+localparam integer VERT_PIXELS = 720;
+localparam integer VERT_FRONT_PORCH = 5;
+localparam integer VERT_BACK_PORCH = 20;
+localparam integer VERT_SYNC = 5;
 localparam integer TOTAL_HEIGHT = VERT_PIXELS + VERT_FRONT_PORCH + VERT_BACK_PORCH + VERT_SYNC;
 localparam integer HEIGHT_BITS = $clog2(TOTAL_HEIGHT + 1);
 

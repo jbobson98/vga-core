@@ -12,10 +12,11 @@ module move_ball_top (
 );
 
 /* Create required clocks */
-wire clk_100mhz, clk_25mhz, locked;
+wire clk_100mhz, clk_25mhz, clk_75mhz, locked;
 clk_generator clocks (
     .clk_100mhz(clk_100mhz),
     .clk_25mhz(clk_25mhz),
+    .clk_75mhz(clk_75mhz),
     .reset(1'b0),
     .locked(locked),
     .clk_in1(clk_in)
@@ -23,24 +24,24 @@ clk_generator clocks (
 
 /* Debounce and synchronize buttons */
 wire rst_sync, up_sync, down_sync, left_sync, right_sync, center_sync;
-debouncer #(.CLK_FREQ(25_000_000)) reset_debouncer 
-    (.clk(clk_25mhz), .rst(1'b0), .btn_in(rst_in), .btn_out(rst_sync));
-debouncer #(.CLK_FREQ(25_000_000)) up_debouncer 
-    (.clk(clk_25mhz), .rst(1'b0), .btn_in(up_in), .btn_out(up_sync));
-debouncer #(.CLK_FREQ(25_000_000)) down_debouncer 
-    (.clk(clk_25mhz), .rst(1'b0), .btn_in(down_in), .btn_out(down_sync));
-debouncer #(.CLK_FREQ(25_000_000)) left_debouncer 
-    (.clk(clk_25mhz), .rst(1'b0), .btn_in(left_in), .btn_out(left_sync));
-debouncer #(.CLK_FREQ(25_000_000)) right_debouncer 
-    (.clk(clk_25mhz), .rst(1'b0), .btn_in(right_in), .btn_out(right_sync));
-debouncer #(.CLK_FREQ(25_000_000)) center_debouncer 
-    (.clk(clk_25mhz), .rst(1'b0), .btn_in(center_in), .btn_out(center_sync));
+debouncer #(.CLK_FREQ(75_000_000)) reset_debouncer 
+    (.clk(clk_75mhz), .rst(1'b0), .btn_in(rst_in), .btn_out(rst_sync));
+debouncer #(.CLK_FREQ(75_000_000)) up_debouncer 
+    (.clk(clk_75mhz), .rst(1'b0), .btn_in(up_in), .btn_out(up_sync));
+debouncer #(.CLK_FREQ(75_000_000)) down_debouncer 
+    (.clk(clk_75mhz), .rst(1'b0), .btn_in(down_in), .btn_out(down_sync));
+debouncer #(.CLK_FREQ(75_000_000)) left_debouncer 
+    (.clk(clk_75mhz), .rst(1'b0), .btn_in(left_in), .btn_out(left_sync));
+debouncer #(.CLK_FREQ(75_000_000)) right_debouncer 
+    (.clk(clk_75mhz), .rst(1'b0), .btn_in(right_in), .btn_out(right_sync));
+debouncer #(.CLK_FREQ(75_000_000)) center_debouncer 
+    (.clk(clk_75mhz), .rst(1'b0), .btn_in(center_in), .btn_out(center_sync));
 
 /* Instantiate VGA core */
 reg [11:0] vga_color_in;
 wire [15:0] vga_x_coord, vga_y_coord;
 vga_core vga (
-    .clk(clk_25mhz),
+    .clk(clk_75mhz),
     .rst(rst_sync),
     .color_in(vga_color_in),
     .hsync(vga_hsync_o),
@@ -59,7 +60,7 @@ localparam integer CURSOR_WIDTH = 10;
 wire [15:0] cursor_x, cursor_y; // location of top left corner of cursor
 
 movement_controller movement (
-    .clk(clk_25mhz),
+    .clk(clk_75mhz),
     .rst(rst_sync),
     .up(up_sync),
     .down(down_sync),
@@ -71,7 +72,7 @@ movement_controller movement (
 );
 
 
-always @(posedge clk_25mhz) begin
+always @(posedge clk_75mhz) begin
     if((vga_x_coord >= cursor_x) && (vga_x_coord <= cursor_x + CURSOR_WIDTH) && 
        (vga_y_coord >= cursor_y) && (vga_y_coord <= cursor_y + CURSOR_WIDTH)) 
     begin

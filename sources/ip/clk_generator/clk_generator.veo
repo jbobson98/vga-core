@@ -54,6 +54,7 @@
 //----------------------------------------------------------------------------
 // clk_100mhz__100.00000______0.000______50.0______137.681____105.461
 // clk_25mhz__25.00000______0.000______50.0______183.467____105.461
+// clk_75mhz__75.00000______0.000______50.0______146.170____105.461
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -71,6 +72,7 @@
     // Clock out ports
     .clk_100mhz(clk_100mhz),     // output clk_100mhz
     .clk_25mhz(clk_25mhz),     // output clk_25mhz
+    .clk_75mhz(clk_75mhz),     // output clk_75mhz
     // Status and control signals
     .reset(reset), // input reset
     .locked(locked),       // output locked
