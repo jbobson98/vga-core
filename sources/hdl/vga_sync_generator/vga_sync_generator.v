@@ -28,7 +28,6 @@ module vga_sync_generator #(
     output wire [HEIGHT_BITS-1 : 0] y_loc  // y coordinate of current pixel
 );
 
-
 // Sync pulse reference points
 localparam integer HORZ_SYNC_START = HORZ_PIXELS + HORZ_BACK_PORCH - 1;
 localparam integer HORZ_SYNC_END = HORZ_PIXELS + HORZ_BACK_PORCH + HORZ_SYNC - 1;
@@ -39,22 +38,17 @@ localparam integer VERT_SYNC_END = VERT_PIXELS + VERT_FRONT_PORCH + VERT_SYNC - 
 wire x_loc_max;
 flex_counter #(.MAX_COUNT(TOTAL_WIDTH-1), .WIDTH(WIDTH_BITS)) horizontal_counter 
     (.clk(clk), .rst(rst), .cen(1'b1), .maxcnt(x_loc_max), .count(x_loc));
-
 wire y_loc_max;
 flex_counter #(.MAX_COUNT(TOTAL_HEIGHT-1), .WIDTH(HEIGHT_BITS)) vertical_counter 
-    (.clk(x_loc_max), .rst(rst), .cen(1'b1), .maxcnt(y_loc_max), .count(y_loc));
+    (.clk(clk), .rst(rst), .cen(x_loc_max), .maxcnt(y_loc_max), .count(y_loc));
 
-// Lines of each frame transmitted in order from top to bottom
-// Pixels in each line are transmitted from left to right
-
-// Line:  [ Active_Video  Front_Porch  H_Sync_Pulse  Back_Porch ]
-// Frame: [ Active_Video(lines) Front_Porch V_Sync_Pulse Back_Porch ]
-// HSYNC and VSYNC active low
-
-// (i.e. the values lead genoration of syncpulse by 1 clock cycle)
-// when horz_cnt = 655, hsync <= 1'b0; (HORZ_SYNC_START)
-// when horz_cnt = 751, hsync <= 1'b1;
-// same for vsync at 489 and 491
+/*
+    Lines of each frame transmitted in order from top to bottom
+    Pixels in each line are transmitted from left to right
+    Line:  [ Active_Video  Front_Porch  H_Sync_Pulse  Back_Porch ]
+    Frame: [ Active_Video(lines) Front_Porch V_Sync_Pulse Back_Porch ]
+    HSYNC and VSYNC active low (for 640x480)
+*/
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
@@ -83,7 +77,7 @@ always @(posedge clk or posedge rst) begin
         end else begin
             vsync <= 1'b1;
         end
-
+        
     end
 end
 
